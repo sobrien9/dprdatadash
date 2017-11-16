@@ -1,4 +1,5 @@
-# 11/10/17 10:12 AM - still need to write a script to pull the EIA 914 production series
+# description -------------------------------------------------------------
+# 11/10/17 10:12 AM - still need to write a script to pull the EIA 914 production series ###
 library(shiny)
 library(shinydashboard)
 library(plotly)
@@ -6,6 +7,8 @@ library(ggplot2)
 library(lubridate)
 library(DBI)
 library(rsconnect)
+
+# dbconnect ---------------------------------------------------------------
 
 #Connect to DB
 setwd('/srv/shiny-server')
@@ -21,7 +24,9 @@ con <- DBI::dbConnect(odbc::odbc(),
 )
 setwd('/srv/shiny-server/Shiny-DPRTesting')
 
-# #Load required data
+
+# load, modify data ---------------------------------------------------------------
+
 
 TotalRigs <- dbReadTable(con, "RigCountUSBasins")
 
@@ -61,7 +66,9 @@ for(i in 1:length(basin_list)){
 }
 DPR_RIGS <- DPR_RIGS %>% arrange(desc(Report_Period))
 
-#SERVER
+
+# shiny server ------------------------------------------------------------
+
 shinyServer(function(input,output){
   
   output$histogram <- renderPlot({
